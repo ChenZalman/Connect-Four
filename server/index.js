@@ -12,9 +12,9 @@ wss.on('connection', (ws)=>{
         console.log("Hello player: " +  arr.indexOf(ws) + " Your pressed: " + json['column'])
     });
 
-    for(let i=0;i<arr.length;i++){
-        arr[i].send("hello all");
-    }
+    // for(let i=0;i<arr.length;i++){
+    //     arr[i].send("hello all");
+    // }
     ws.on('close', ()=>{
         //remove from arr
         let index = arr.indexOf(ws)

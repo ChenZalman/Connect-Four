@@ -6,11 +6,11 @@
 </head>
 
 <body>
-    <div id="status">connecting to server</div>
-    <div id="messages"></div>
+    <div id="status" >connecting to server</div>
     <div>
-        <input type="text" id="messageInput" />
-        <button onclick="sendMessage()">send</button>
+        <input type="text" id="roomInput" placeholder="Room Number"/>
+        <input type="text" id="idInput" placeholder="Your ID"/>
+        <button id="btnSend" onclick="sendMessage()">send</button>
         <table id="board"></table>
     </div>
     <script src="app.js"></script>
