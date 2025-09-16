@@ -5,15 +5,18 @@ function move(q) {
     let roomId = q['room']
     let playerId = q['id']
     let row = 5
-    console.log(roomId + " player: " + playerId + " inserted token to col: " + column)
-    while (games[q['room']]['table'][row][column]) {
+    // console.log(roomId + " player: " + playerId + " inserted token to col: " + column)
+if (games[roomId]["turn"] !== games[roomId]['players'].indexOf(playerId)) {
+        throw new Error("Not your turn!")
+    }
+    while (games[roomId]['table'][row][column]) {
         row--
     }
-    if(row < 0){
+    if (row < 0) {
         throw new Error("Invalid move!");
     }
     games[q['room']]['table'][row][column] = playerId
-
+    games[roomId]["turn"] = (games[roomId]["turn"] + 1) % 2
     // console.log(row)
     // for (let i = 0; i < 6; i++)
     //     for (let column = 0; column < 7; column++)
@@ -27,6 +30,7 @@ function createRoom(q) {
             "roomId": q['room'],
             "players": [q["id"]],
             "table": [...Array(7)].map(e => Array(6)),
+            "turn": 0,
         }
     }
     else {

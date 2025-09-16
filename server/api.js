@@ -9,12 +9,13 @@ function insert(req, res, q) {
     try {
         gameLogic.move(q, res)
     } catch (e) {
+        console.log(e.message)
         res.writeHead(400, { "Content-Type": "text\plain" })
         res.end(e.message)
         return
     }
     res.writeHead(200, { "Content-Type": "text\plain" })
-    res.end()
+    res.end("next turn!")
     return
 }
 
@@ -31,5 +32,12 @@ function login(req, res, q) {
     return
 }
 
+function update(req, res, q){
+    res.writeHead(200, { "Content-Type": "text\plain" })
+    res.end("Update board!")
+    return
+}
+
 exports.insert = insert
 exports.login = login
+exports.update = update

@@ -1,29 +1,6 @@
 let WebSocket = require('ws');
-let wss = new WebSocket.Server({port:8080});
-console.log('server is now listening on port 8080');
+let wss = null
 let arr = [];
-wss.on('connection', (ws)=>{
-    console.log('new client is now connected...');
-    ws.send('welcome dear client');
-    ws.isFirst = true;
-    arr.push(ws);
-    ws.on('message', (message)=>{
-        let json = JSON.parse(message)
-        console.log("Hello player: " +  arr.indexOf(ws) + " Your pressed: " + json['column'])
-    });
-
-    // for(let i=0;i<arr.length;i++){
-    //     arr[i].send("hello all");
-    // }
-    ws.on('close', ()=>{
-        //remove from arr
-        let index = arr.indexOf(ws)
-        arr.splice(index,index)
-        console.log('client got disconnected');
-    });
-    
-});
-
 let http = require('http');
 let url = require('url');
 let api = require('./api');
@@ -36,6 +13,33 @@ let extensions = {
     '.js': 'text/javascript',
     '.png': 'image/png'
 };
+
+wss = new WebSocket.Server({ port: 8080 });
+console.log('server is now listening on port 8080');
+wss.on('connection', (ws) => {
+    // console.log('new client is now connected...');
+    // ws.send('welcome dear client');
+    // ws.isFirst = true;
+    arr.push(ws);
+    // fs.writeFile('WebSocket_LOG.txt', ws.toString(), () => { })
+    ws.on('message', (message) => {
+        // let json = JSON.parse(message)
+        // console.log("Hello player: " + arr.indexOf(ws) + " Your pressed: " + json['column'])
+        for (let i = 0; i < arr.length; i++) {
+            arr[i].send(`update!`);
+        }
+    });
+
+    ws.on('close', () => {
+        //remove from arr
+        let index = arr.indexOf(ws)
+        arr.splice(index, index)
+        console.log('client got disconnected');
+    });
+
+});
+
+
 
 
 
