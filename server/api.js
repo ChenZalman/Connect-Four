@@ -26,15 +26,13 @@ function login(req, res, q) {
         return;
     }
     console.log("Room: " + q["room"] + " ID: " + q["id"])
-    gameLogic.createRoom(q)
-    res.writeHead(200, { "Content-Type": "text\plain" })
-    res.end()
-    return
+    gameLogic.createRoom(q,res)
+
 }
 
 function update(req, res, q){
     res.writeHead(200, { "Content-Type": "text\plain" })
-    res.end("Update board!")
+    res.end(gameLogic.getBoard(q))
     return
 }
 

@@ -36,7 +36,7 @@ for (let i = 0; i < 6; i++) {
     for (let j = 0; j < 7; j++) {
         cells[i].push("O")
         let cell = document.createElement("td")
-        cell.id = "td" + j
+        cell.id = "tdr" + i + "c" + j
         cell.innerHTML = cells[i][j]
         row.appendChild(cell)
     }
@@ -49,10 +49,6 @@ ws.onopen = () => {
     status.style.color = "blue";
 };
 ws.onmessage = (ev) => {
-    // let message = document.createElement('div');
-    // message.innerHTML = ev.data;
-    // messages.appendChild(message);
-    // messages.scrollTop = message.scrollHeight;
     updateBoard()
 };
 ws.onerror = (err) => {
@@ -75,7 +71,12 @@ function sendMessage(i) {
 function updateBoard() {
     sendHttpGetRequest("/api/update?room=" + roomInput.value, (res) => {
         console.log("Updating board..." + res)
-     })
+        let updatedTable = JSON.parse(res)
+        for (i = 0; i < 6; i++)
+            for (j = 0; j < 7; j++) {
+                document.getElementById("tdr" + i + "c" + j).style.color = updatedTable['table'][i][j]
+            }
+    })
 }
 
 function sendHttpGetRequest(url, callback) {
@@ -84,6 +85,9 @@ function sendHttpGetRequest(url, callback) {
         if (request.readyState == 4) {
             if (request.status == 200) {
                 callback(request.responseText);
+            }
+            else{
+                
             }
         }
 
