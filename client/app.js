@@ -38,6 +38,7 @@ for (let i = 0; i < 6; i++) {
         let cell = document.createElement("td")
         cell.id = "tdr" + i + "c" + j
         cell.innerHTML = cells[i][j]
+        cell.style.fontWeight = "bold"
         row.appendChild(cell)
     }
     table.appendChild(row)

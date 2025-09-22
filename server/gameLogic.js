@@ -64,22 +64,22 @@ function getBoard(q) {
 function checkVectory(q) {
     //Check rows for 4 in a row
     for (i = 0; i < 6; i++) {
-        for (j = 0; j < (7 - 4); j++) {
+        for (j = 0; j < (7 - 3); j++) {
             if ((games[q['room']]['table'][i][j + 0] === games[q['room']]['table'][i][j + 1]) &&
                 (games[q['room']]['table'][i][j + 2] === games[q['room']]['table'][i][j + 3]) &&
                 (games[q['room']]['table'][i][j + 0] === games[q['room']]['table'][i][j + 2]) &&
-                (games[q['room']]['table'][i][j + 0] !== null)) {
+                (games[q['room']]['table'][i][j + 0] != null)) {
                 games[q['room']]['winner'] = games[q['room']]['players'][games[q['room']]['turn']]
             }
         }
     }
     //Check rows for 4 in a column
-    for (i = 0; i < (6 - 4); i++) {
+    for (i = 0; i < (6 - 3); i++) {
         for (j = 0; j < 7; j++) {
             if ((games[q['room']]['table'][i + 0][j] === games[q['room']]['table'][i + 1][j]) &&
                 (games[q['room']]['table'][i + 2][j] === games[q['room']]['table'][i + 3][j]) &&
                 (games[q['room']]['table'][i + 0][j] === games[q['room']]['table'][i + 2][j]) &&
-                (games[q['room']]['table'][i + 0][j] !== null)) {
+                (games[q['room']]['table'][i + 0][j] != null)) {
                 games[q['room']]['winner'] = games[q['room']]['players'][games[q['room']]['turn']]
             }
         }
