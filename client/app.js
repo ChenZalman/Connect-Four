@@ -71,11 +71,14 @@ function sendMessage(i) {
 function updateBoard() {
     sendHttpGetRequest("/api/update?room=" + roomInput.value, (res) => {
         console.log("Updating board..." + res)
-        let updatedTable = JSON.parse(res)
-        for (i = 0; i < 6; i++)
+        let updatedGame = JSON.parse(res)
+        for (i = 0; i < 6; i++) {
             for (j = 0; j < 7; j++) {
-                document.getElementById("tdr" + i + "c" + j).style.color = updatedTable['table'][i][j]
+                document.getElementById("tdr" + i + "c" + j).style.color = updatedGame['table'][i][j]
             }
+        }
+        let winner = updatedGame['winner']
+        console.log(winner)
     })
 }
 
@@ -86,8 +89,8 @@ function sendHttpGetRequest(url, callback) {
             if (request.status == 200) {
                 callback(request.responseText);
             }
-            else{
-                
+            else {
+
             }
         }
 

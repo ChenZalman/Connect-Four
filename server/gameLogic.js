@@ -5,6 +5,9 @@ function move(q) {
     let roomId = q['room']
     let playerId = q['id']
     let row = 5
+    if (games[roomId]['winner']) {
+        return
+    }
     if (games[roomId]["turn"] !== games[roomId]['players'].indexOf(playerId)) {
         throw new Error("Not your turn!")
     }
@@ -16,8 +19,10 @@ function move(q) {
     }
     // games[q['room']]['table'][row][column] = playerId
     fillBoard(row, column, games[roomId]['turn'], roomId)
+    checkVectory(q)
     games[roomId]["turn"] = (games[roomId]["turn"] + 1) % 2
-    console.log( games[roomId]["turn"])
+    // console.log( games[roomId]["turn"])
+
 }
 
 function createRoom(q, res) {
@@ -28,6 +33,7 @@ function createRoom(q, res) {
             "players": [q["id"]],
             "table": [...Array(6)].map(e => Array(7)),
             "turn": 0,
+            "winner": null,
         }
     }
     else {
@@ -51,8 +57,33 @@ function fillBoard(row, column, turn, roomId) {
         games[roomId]['table'][row][column] = '#0000ff'
 }
 
-function getBoard(q){
-return JSON.stringify({"table": games[q['room']]['table']})
+function getBoard(q) {
+    return JSON.stringify({ "table": games[q['room']]['table'], "winner": games[q['room']]['winner'] })
+}
+
+function checkVectory(q) {
+    //Check rows for 4 in a row
+    for (i = 0; i < 6; i++) {
+        for (j = 0; j < (7 - 4); j++) {
+            if ((games[q['room']]['table'][i][j + 0] === games[q['room']]['table'][i][j + 1]) &&
+                (games[q['room']]['table'][i][j + 2] === games[q['room']]['table'][i][j + 3]) &&
+                (games[q['room']]['table'][i][j + 0] === games[q['room']]['table'][i][j + 2]) &&
+                (games[q['room']]['table'][i][j + 0] !== null)) {
+                games[q['room']]['winner'] = games[q['room']]['players'][games[q['room']]['turn']]
+            }
+        }
+    }
+    //Check rows for 4 in a column
+    for (i = 0; i < (6 - 4); i++) {
+        for (j = 0; j < 7; j++) {
+            if ((games[q['room']]['table'][i + 0][j] === games[q['room']]['table'][i + 1][j]) &&
+                (games[q['room']]['table'][i + 2][j] === games[q['room']]['table'][i + 3][j]) &&
+                (games[q['room']]['table'][i + 0][j] === games[q['room']]['table'][i + 2][j]) &&
+                (games[q['room']]['table'][i + 0][j] !== null)) {
+                games[q['room']]['winner'] = games[q['room']]['players'][games[q['room']]['turn']]
+            }
+        }
+    }
 }
 
 exports.move = move
