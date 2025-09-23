@@ -17,48 +17,50 @@ function move(q) {
     if (row < 0) {
         throw new Error("Invalid move!");
     }
-    // games[q['room']]['table'][row][column] = playerId
-    fillBoard(row, column, games[roomId]['turn'], roomId)
-    checkVectory(q)
-    games[roomId]["turn"] = (games[roomId]["turn"] + 1) % 2
-    // console.log( games[roomId]["turn"])
-
+    fillBoard(row, column, games[roomId]['turn'], roomId);
+    checkVectory(q);
+    games[roomId]["turn"] = (games[roomId]["turn"] + 1) % 2;
 }
 
 function createRoom(q, res) {
     if (!games[q['room']]) {
-        console.log("Creating new room")
+        console.log("Creating new room");
         games[q['room']] = {
             "roomId": q['room'],
             "players": [q["id"]],
             "table": [...Array(6)].map(e => Array(7)),
             "turn": 0,
             "winner": null,
-        }
+        };
     }
     else {
         if (games[q['room']]['players'].length === 2) {
-            res.writeHead(401, { "Content-Type": "text/plain" })
-            res.end("Sorry room is full")
-            return
+            res.writeHead(401, { "Content-Type": "text/plain" });
+            res.end("Sorry room is full");
+            return;
         }
-        games[q['room']]['players'].push(q['id'])
+        games[q['room']]['players'].push(q['id']);
     }
-    console.log(games)
-    res.writeHead(200, { "Content-Type": "text\plain" })
-    res.end()
-    return
+    console.log(games);
+    res.writeHead(200, { "Content-Type": "text\plain" });
+    res.end();
+    return;
 }
 
 function fillBoard(row, column, turn, roomId) {
     if (turn === 0)
-        games[roomId]['table'][row][column] = '#ff0000'
+        games[roomId]['table'][row][column] = '#ff0000';
     else
-        games[roomId]['table'][row][column] = '#0000ff'
+        games[roomId]['table'][row][column] = '#0000ff';
 }
 
 function getBoard(q) {
-    return JSON.stringify({ "table": games[q['room']]['table'], "winner": games[q['room']]['winner'] })
+    return JSON.stringify({
+        "table": games[q['room']]['table'],
+        //Gets the right game room playerlist[Gets the player id position]
+        "turn": games[q['room']]['players'][games[q['room']]['turn']],
+        "winner": games[q['room']]['winner']
+    });
 }
 
 function checkVectory(q) {
@@ -69,7 +71,7 @@ function checkVectory(q) {
                 (games[q['room']]['table'][i][j + 2] === games[q['room']]['table'][i][j + 3]) &&
                 (games[q['room']]['table'][i][j + 0] === games[q['room']]['table'][i][j + 2]) &&
                 (games[q['room']]['table'][i][j + 0] != null)) {
-                games[q['room']]['winner'] = games[q['room']]['players'][games[q['room']]['turn']]
+                games[q['room']]['winner'] = games[q['room']]['players'][games[q['room']]['turn']];
             }
         }
     }
@@ -80,7 +82,7 @@ function checkVectory(q) {
                 (games[q['room']]['table'][i + 2][j] === games[q['room']]['table'][i + 3][j]) &&
                 (games[q['room']]['table'][i + 0][j] === games[q['room']]['table'][i + 2][j]) &&
                 (games[q['room']]['table'][i + 0][j] != null)) {
-                games[q['room']]['winner'] = games[q['room']]['players'][games[q['room']]['turn']]
+                games[q['room']]['winner'] = games[q['room']]['players'][games[q['room']]['turn']];
             }
         }
     }

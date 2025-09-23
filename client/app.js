@@ -1,22 +1,23 @@
 let status = document.getElementById('status');
 let roomInput = document.getElementById('roomInput');
 let idInput = document.getElementById('idInput');
-let table = document.getElementById('board')
-let btnSend = document.getElementById("btnSend")
+let table = document.getElementById('board');
+let btnSend = document.getElementById("btnSend");
+let h1Turn = document.getElementById("turn");
 let ws = new WebSocket("ws://localhost:8080?room=");
-let cells = []
-let row = null
+let cells = [];
+let row = null;
 
 let headers = (i) => {
     sendHttpGetRequest("/api/insert?column=" + i + "&room=" + roomInput.value + "&id=" + idInput.value, (res) => {
-        console.log(res)
-        ws.send("update")
+        console.log(res);
+        ws.send("update");
     })
 }
 
 // Create the board of the game
-row = document.createElement('tr')
-row.id = "trHead"
+row = document.createElement('tr');
+row.id = "trHead";
 
 // Create headers to show where to place the tokens
 for (let i = 0; i < 7; i++) {
@@ -66,6 +67,7 @@ function sendMessage(i) {
         roomInput.disabled = true
         idInput.disabled = true
         btnSend.remove()
+        updateBoard()
     })
 }
 
@@ -79,7 +81,8 @@ function updateBoard() {
             }
         }
         let winner = updatedGame['winner']
-        console.log(winner)
+        let turn = updatedGame['turn']
+        h1Turn.innerHTML = winner ? "Winner: " + winner : "Now playing: " + turn
     })
 }
 
@@ -91,10 +94,9 @@ function sendHttpGetRequest(url, callback) {
                 callback(request.responseText);
             }
             else {
-
+                console.log(request.responseText);
             }
         }
-
     };
     request.open("GET", url, true);
     request.send();

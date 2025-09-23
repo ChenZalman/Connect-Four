@@ -1,5 +1,5 @@
 let WebSocket = require('ws');
-let wss = null
+let wss = null;
 let arr = [];
 let http = require('http');
 let url = require('url');
