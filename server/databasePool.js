@@ -18,7 +18,7 @@ function createTable(q) {
             return
         }
         console.log(roomId)
-        con.query('Create TABLE  ?( id INT AUTO_INCREMENT PRIMARY KEY, player VARCHAR(50) NOT NULL, rowNum INT NOT NULL, colNum INT NOT NULL);', [roomId], (err,result) => {
+        con.query('Create TABLE  ' + roomId +'( id INT AUTO_INCREMENT PRIMARY KEY, player VARCHAR(50) NOT NULL, rowNum INT NOT NULL, colNum INT NOT NULL);', [roomId], (err,result) => {
             if(err){
                 throw new Error("Can't create table for this room" + err)
             }
