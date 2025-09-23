@@ -17,14 +17,8 @@ let extensions = {
 wss = new WebSocket.Server({ port: 8080 });
 console.log('server is now listening on port 8080');
 wss.on('connection', (ws) => {
-    // console.log('new client is now connected...');
-    // ws.send('welcome dear client');
-    // ws.isFirst = true;
     arr.push(ws);
-    // fs.writeFile('WebSocket_LOG.txt', ws.toString(), () => { })
     ws.on('message', (message) => {
-        // let json = JSON.parse(message)
-        // console.log("Hello player: " + arr.indexOf(ws) + " Your pressed: " + json['column'])
         for (let i = 0; i < arr.length; i++) {
             arr[i].send(`update!`);
         }

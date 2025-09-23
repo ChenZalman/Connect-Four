@@ -9,10 +9,12 @@ let cells = [];
 let row = null;
 
 let headers = (i) => {
-    sendHttpGetRequest("/api/insert?column=" + i + "&room=" + roomInput.value + "&id=" + idInput.value, (res) => {
-        console.log(res);
-        ws.send("update");
-    })
+    sendHttpGetRequest("/api/insert?column=" + i + "&room=" + roomInput.value + "&id=" + idInput.value,
+        (res) => {
+            console.log(res);
+            ws.send("update");
+        },
+        (res) => { })
 }
 
 // Create the board of the game
@@ -63,30 +65,34 @@ ws.onclose = () => {
 }
 
 function sendMessage(i) {
-    sendHttpGetRequest("/api/login?room=" + roomInput.value + "&id=" + idInput.value, (res) => {
-        roomInput.disabled = true
-        idInput.disabled = true
-        btnSend.remove()
-        updateBoard()
-    })
+    sendHttpGetRequest("/api/login?room=" + roomInput.value + "&id=" + idInput.value,
+        (res) => {
+            roomInput.disabled = true
+            idInput.disabled = true
+            btnSend.remove()
+            updateBoard()
+        },
+        (res) => { })
 }
 
 function updateBoard() {
-    sendHttpGetRequest("/api/update?room=" + roomInput.value, (res) => {
-        console.log("Updating board..." + res)
-        let updatedGame = JSON.parse(res)
-        for (i = 0; i < 6; i++) {
-            for (j = 0; j < 7; j++) {
-                document.getElementById("tdr" + i + "c" + j).style.color = updatedGame['table'][i][j]
+    sendHttpGetRequest("/api/update?room=" + roomInput.value,
+        (res) => {
+            console.log("Updating board..." + res)
+            let updatedGame = JSON.parse(res)
+            for (i = 0; i < 6; i++) {
+                for (j = 0; j < 7; j++) {
+                    document.getElementById("tdr" + i + "c" + j).style.color = updatedGame['table'][i][j]
+                }
             }
-        }
-        let winner = updatedGame['winner']
-        let turn = updatedGame['turn']
-        h1Turn.innerHTML = winner ? "Winner: " + winner : "Now playing: " + turn
-    })
+            let winner = updatedGame['winner']
+            let turn = updatedGame['turn']
+            h1Turn.innerHTML = winner ? "Winner: " + winner : "Now playing: " + turn
+        },
+        (res) => { })
 }
 
-function sendHttpGetRequest(url, callback) {
+function sendHttpGetRequest(url, callback, errorCallBack) {
     let request = new XMLHttpRequest();
     request.onreadystatechange = () => {
         if (request.readyState == 4) {
@@ -94,7 +100,8 @@ function sendHttpGetRequest(url, callback) {
                 callback(request.responseText);
             }
             else {
-                console.log(request.responseText);
+                h1Turn.innerHTML = request.responseText
+                //errorCallBack(request.responseText);
             }
         }
     };

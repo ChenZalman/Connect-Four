@@ -1,3 +1,4 @@
+let pool = require("./databasePool")
 let games = {}
 
 function move(q) {
@@ -32,6 +33,7 @@ function createRoom(q, res) {
             "turn": 0,
             "winner": null,
         };
+        pool.createtable(q)
     }
     else {
         if (games[q['room']]['players'].length === 2) {
