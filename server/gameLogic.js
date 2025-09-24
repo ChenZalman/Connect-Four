@@ -20,6 +20,7 @@ function move(q) {
     }
     fillBoard(row, column, games[roomId]['turn'], roomId);
     checkVectory(q);
+    pool.recordMove(roomId, playerId,row,column)
     games[roomId]["turn"] = (games[roomId]["turn"] + 1) % 2;
 }
 
