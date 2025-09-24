@@ -14,13 +14,13 @@ function move(q) {
     }
     while (games[roomId]['table'][row][column]) {
         row--
-            if (row < 0) {
-        throw new Error("Invalid move!");
-    }
+        if (row < 0) {
+            throw new Error("Invalid move!");
+        }
     }
     fillBoard(row, column, games[roomId]['turn'], roomId);
     checkVectory(q);
-    pool.recordMove(roomId, playerId,row,column)
+    pool.recordMove(roomId, playerId, row, column)
     games[roomId]["turn"] = (games[roomId]["turn"] + 1) % 2;
 }
 
@@ -34,7 +34,7 @@ function createRoom(q, res) {
             "turn": 0,
             "winner": null,
         };
-        pool.createtable(q)
+        pool.createtable(q);
     }
     else {
         if (games[q['room']]['players'].length === 2) {
@@ -85,6 +85,28 @@ function checkVectory(q) {
                 (games[q['room']]['table'][i + 2][j] === games[q['room']]['table'][i + 3][j]) &&
                 (games[q['room']]['table'][i + 0][j] === games[q['room']]['table'][i + 2][j]) &&
                 (games[q['room']]['table'][i + 0][j] != null)) {
+                games[q['room']]['winner'] = games[q['room']]['players'][games[q['room']]['turn']];
+            }
+        }
+    }
+    //Check for 4 on main diagnal
+    for (i = 0; i < (6 - 3); i++) {
+        for (j = 0; j < (7 - 3); j++) {
+            if ((games[q['room']]['table'][i + 0][j + 0] === games[q['room']]['table'][i + 1][j + 1]) &&
+                (games[q['room']]['table'][i + 2][j + 2] === games[q['room']]['table'][i + 3][j + 3]) &&
+                (games[q['room']]['table'][i + 0][j + 0] === games[q['room']]['table'][i + 2][j + 2]) &&
+                (games[q['room']]['table'][i + 0][j + 0] != null)) {
+                games[q['room']]['winner'] = games[q['room']]['players'][games[q['room']]['turn']];
+            }
+        }
+    }
+    //Check for 4 on secondary diagnal
+    for (i = 5; i > 2; i--) {
+        for (j = 0; j < (7 - 3); j++) {
+            if ((games[q['room']]['table'][i - 0][j + 0] === games[q['room']]['table'][i - 1][j + 1]) &&
+                (games[q['room']]['table'][i - 2][j + 2] === games[q['room']]['table'][i - 3][j + 3]) &&
+                (games[q['room']]['table'][i - 0][j + 0] === games[q['room']]['table'][i - 2][j + 2]) &&
+                (games[q['room']]['table'][i - 0][j + 0] != null)) {
                 games[q['room']]['winner'] = games[q['room']]['players'][games[q['room']]['turn']];
             }
         }
