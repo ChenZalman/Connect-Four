@@ -14,9 +14,9 @@ function move(q) {
     }
     while (games[roomId]['table'][row][column]) {
         row--
-    }
-    if (row < 0) {
+            if (row < 0) {
         throw new Error("Invalid move!");
+    }
     }
     fillBoard(row, column, games[roomId]['turn'], roomId);
     checkVectory(q);
