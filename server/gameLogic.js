@@ -34,7 +34,12 @@ function createRoom(q, res) {
             "turn": 0,
             "winner": null,
         };
-        pool.createtable(q);
+        // let message = 
+        pool.createtable(q, res)
+        // if(message){
+        //     console.log(message)
+        //     throw new Error("Can't create table for this room: " + message)
+        // }
     }
     else {
         if (games[q['room']]['players'].length === 2) {
@@ -43,11 +48,12 @@ function createRoom(q, res) {
             return;
         }
         games[q['room']]['players'].push(q['id']);
+        // console.log(games);
+        res.writeHead(200, { "Content-Type": "text\plain" });
+        res.end();
+        return;
     }
-    console.log(games);
-    res.writeHead(200, { "Content-Type": "text\plain" });
-    res.end();
-    return;
+
 }
 
 function fillBoard(row, column, turn, roomId) {

@@ -26,14 +26,14 @@ function login(req, res, q) {
         return;
     }
     console.log("Room: " + q["room"] + " ID: " + q["id"])
-    try {
+    // try {
         gameLogic.createRoom(q, res)
-    } catch (e) {
-        console.log("Do I return to this place?!!!!!! " + e.message)
-        res.writeHead(500, { "Content-Type": "text/plain" });
-        res.end(e.message);
-        return;
-    }
+    // } catch (e) {
+    //     console.log("Catched the error here at API: " + e.message)
+    //     res.writeHead(500, { "Content-Type": "text/plain" });
+    //     res.end(e.message);
+    //     return;
+    // }
 }
 
 function update(req, res, q) {
